@@ -48,14 +48,24 @@ export async function POST(request: NextRequest) {
       if (!rawBody || rawBody.trim() === '') {
         return NextResponse.json<ChatResponse>({
           reply: 'Please provide either a message or an faqId.',
-        }, { status: 400 });
+        }, { 
+          status: 400,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+          }
+        });
       }
       body = JSON.parse(rawBody) as ChatRequest;
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       return NextResponse.json<ChatResponse>({
         reply: 'Invalid request format. Please provide a valid JSON body.',
-      }, { status: 400 });
+      }, { 
+        status: 400,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        }
+      });
     }
     
     // Validate body structure
@@ -72,41 +82,71 @@ export async function POST(request: NextRequest) {
         return NextResponse.json<ChatResponse>({
           reply: faq.answer,
           matchedId: faq.id,
+        }, {
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+          }
         });
       }
       return NextResponse.json<ChatResponse>({
         reply: 'I could not find that topic. Please try asking a question or selecting a suggested topic.',
-      }, { status: 404 });
+      }, { 
+        status: 404,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        }
+      });
     }
     
     // Handle message matching
     if (body.message && typeof body.message === 'string') {
-      const match = findBestMatch(body.message, faqData);
+      // Limit message length to prevent performance issues
+      const message = body.message.slice(0, 500);
+      
+      const match = findBestMatch(message, faqData);
       
       if (match && match.score >= CONFIDENCE_THRESHOLD) {
         return NextResponse.json<ChatResponse>({
           reply: match.faq.answer,
           matchedId: match.faq.id,
+        }, {
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+          }
         });
       }
       
       // Fallback with helpful response
-      const suggestions = getSuggestions(body.message);
+      const suggestions = getSuggestions(message);
       
       return NextResponse.json<ChatResponse>({
         reply: FALLBACK_RESPONSE,
         suggestions,
+      }, {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        }
       });
     }
     
     return NextResponse.json<ChatResponse>({
       reply: 'Please provide either a message or an faqId.',
-    }, { status: 400 });
+    }, { 
+      status: 400,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+      }
+    });
     
   } catch (error) {
     console.error('API error:', error);
     return NextResponse.json<ChatResponse>({
       reply: 'An error occurred while processing your request.',
-    }, { status: 500 });
+    }, { 
+      status: 500,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+      }
+    });
   }
 }

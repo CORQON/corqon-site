@@ -55,18 +55,32 @@ export default function FaqAssistantBlock() {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const typingIntervalsRef = useRef<Record<string, number>>({});
   const cooldownTimerRef = useRef<number | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const pendingRequestRef = useRef<boolean>(false);
+  const rafRef = useRef<number | null>(null);
 
   const scrollToBottom = (smooth: boolean = false) => {
-    if (messagesContainerRef.current) {
-      // On mobile, always use instant scroll to avoid performance issues
-      if (isMobile || !smooth) {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-      } else {
-        messagesContainerRef.current.scrollTo({
-          top: messagesContainerRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
-      }
+    if (!messagesContainerRef.current) return;
+    
+    // Cancel any pending scroll animation
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    
+    // On mobile, always use instant scroll to avoid performance issues
+    if (isMobile || !smooth) {
+      rafRef.current = requestAnimationFrame(() => {
+        if (messagesContainerRef.current) {
+          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        }
+        rafRef.current = null;
+      });
+    } else {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -171,6 +185,14 @@ export default function FaqAssistantBlock() {
       if (cooldownTimerRef.current) {
         clearTimeout(cooldownTimerRef.current);
       }
+      // Cancel any pending API requests
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      // Cancel any pending scroll animations
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
   }, []);
 
@@ -184,6 +206,20 @@ export default function FaqAssistantBlock() {
       }
       return;
     }
+
+    // Prevent concurrent requests on mobile
+    if (isMobile && pendingRequestRef.current) {
+      return;
+    }
+
+    // Cancel any pending request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new abort controller for this request
+    abortControllerRef.current = new AbortController();
+    pendingRequestRef.current = true;
 
     // Increment counter immediately to prevent rapid submissions
     setQuestionCount(prev => prev + 1);
@@ -228,7 +264,13 @@ export default function FaqAssistantBlock() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(faqId ? { faqId } : { message: text.trim() }),
+        signal: abortControllerRef.current.signal,
       });
+
+      // Check if request was aborted
+      if (abortControllerRef.current.signal.aborted) {
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -277,8 +319,16 @@ export default function FaqAssistantBlock() {
       } else {
         setSuggestions(INITIAL_SUGGESTIONS);
       }
+      
+      pendingRequestRef.current = false;
     } catch (error) {
+      // Ignore abort errors
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
+      
       console.error('Error sending message:', error);
+      pendingRequestRef.current = false;
       const errorMessage: Message = {
         id: `bot-${Date.now()}`,
         text: 'I apologize, but I encountered an error. Please try again.',
@@ -333,7 +383,7 @@ export default function FaqAssistantBlock() {
         </p>
       </div>
 
-      <div className="bg-white/60 dark:bg-white/5 backdrop-blur-sm md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="bg-white/60 dark:bg-white/5 md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
         {/* Chat Messages */}
         <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2">
           {messages.map((message) => (
