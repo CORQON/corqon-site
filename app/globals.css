@@ -59,6 +59,11 @@ a {
     transition: none !important;
   }
   
+  /* Disable smooth scrolling on mobile */
+  html {
+    scroll-behavior: auto !important;
+  }
+  
   /* Disable ALL backdrop filters and blur effects on mobile - major performance killer */
   *,
   *::before,

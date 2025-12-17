@@ -496,8 +496,9 @@ export default function AnimatedChatDemo() {
       return;
     }
     
-    // On mobile, skip auto-animation entirely
+    // On mobile, skip auto-animation entirely - ensure no timers or intervals run
     if (isMobile) {
+      clearAllTimers();
       setContextStage('ready');
       setStage('ready');
       setSelectedWeek(50);

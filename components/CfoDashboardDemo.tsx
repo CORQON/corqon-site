@@ -963,6 +963,11 @@ function Tooltip({ content, children }: { content: string; children: React.React
 
   useEffect(() => {
     if (!isOpen || !containerRef.current || !tooltipRef.current) return;
+    
+    // Disable scroll/resize listeners on mobile to prevent crashes
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return;
+    }
 
     const updatePosition = () => {
       const rect = containerRef.current?.getBoundingClientRect();
@@ -1096,9 +1101,14 @@ function KpiCard({
     }, 100);
   };
 
-  // Update position on scroll/resize when tooltip is open
+  // Update position on scroll/resize when tooltip is open - disabled on mobile
   useEffect(() => {
     if (!isTooltipOpen) return;
+    
+    // Disable scroll/resize listeners on mobile to prevent crashes
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return;
+    }
 
     const updatePosition = () => {
       if (iconRef.current) {
