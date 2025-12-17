@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
@@ -15,12 +15,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'CORQON - Turn vitality into measurable performance',
   description: 'AI-driven platform that improves employee vitality, focus and work performance through actionable insights.',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -31,6 +25,13 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
