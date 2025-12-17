@@ -723,7 +723,7 @@ export default function AnimatedChatDemo() {
         <DottedDivider />
 
         {/* New Under-Area: 70/30 Blocks */}
-        <div className="px-8 py-10">
+        <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-10">
           <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] lg:divide-x lg:divide-white/10 gap-6 lg:gap-0">
             <div className="lg:pr-6">
               <DecisionInputsPanel />

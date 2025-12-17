@@ -176,51 +176,53 @@ export default function DecisionInputsPanel() {
                     </div>
                   </div>
 
-                  {/* Status indicator */}
-                  {status === 'scanning' && (
-                    <div className="flex-shrink-0 flex items-center gap-1.5 pt-1">
-                      <div className="flex gap-0.5">
-                        <div
-                          className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
-                          style={{ animationDelay: '0ms' }}
-                        />
-                        <div
-                          className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
-                          style={{ animationDelay: '150ms' }}
-                        />
-                        <div
-                          className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
-                          style={{ animationDelay: '300ms' }}
-                        />
-                      </div>
-                      <span className="text-[10px] text-gray-500 dark:text-white/60">
-                        Scanning
-                      </span>
-                    </div>
-                  )}
-
-                  {status === 'done' && (
-                    <div className="flex-shrink-0 flex items-center gap-1.5 pt-1">
-                      <div className="px-1.5 py-0.5 rounded-md bg-[#2F6FFF]/15 border border-[#2F6FFF]/25 animate-corqon-pop">
-                        <svg
-                          className="w-2.5 h-2.5 text-[#2F6FFF]"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M5 13l4 4L19 7"
+                  {/* Status indicator - Fixed height container to prevent layout shifts on mobile */}
+                  <div className="flex-shrink-0 flex items-center gap-1.5 pt-1 min-h-[20px] md:min-h-[20px]">
+                    {status === 'scanning' && (
+                      <div className="flex items-center gap-1.5">
+                        <div className="flex gap-0.5">
+                          <div
+                            className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
+                            style={{ animationDelay: '0ms' }}
                           />
-                        </svg>
+                          <div
+                            className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
+                            style={{ animationDelay: '150ms' }}
+                          />
+                          <div
+                            className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
+                            style={{ animationDelay: '300ms' }}
+                          />
+                        </div>
+                        <span className="text-[10px] text-gray-500 dark:text-white/60 whitespace-nowrap">
+                          Scanning
+                        </span>
                       </div>
-                      <span className="text-[10px] text-gray-500 dark:text-white/60">
-                        Ready
-                      </span>
-                    </div>
-                  )}
+                    )}
+
+                    {status === 'done' && (
+                      <div className="flex items-center gap-1.5">
+                        <div className="px-1.5 py-0.5 rounded-md bg-[#2F6FFF]/15 border border-[#2F6FFF]/25 animate-corqon-pop">
+                          <svg
+                            className="w-2.5 h-2.5 text-[#2F6FFF]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-[10px] text-gray-500 dark:text-white/60 whitespace-nowrap">
+                          Ready
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
