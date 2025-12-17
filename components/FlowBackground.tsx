@@ -258,23 +258,32 @@ export default function FlowBackground({
   };
 
   const animate = () => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    try {
+      const canvas = canvasRef.current;
+      const container = containerRef.current;
+      if (!canvas || !container) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      // CRITICAL: Never run on mobile - check immediately and bail out
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return;
+      }
 
-    const rect = container.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const dpr = window.devicePixelRatio || 1;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-    ctx.scale(dpr, dpr);
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      // CRITICAL: Cap DPR to 1 on mobile to prevent memory issues
+      const dpr = typeof window !== 'undefined' && window.innerWidth < 768 
+        ? 1 
+        : (window.devicePixelRatio || 1);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
 
     if (wavesRef.current.length === 0 || Math.abs(wavesRef.current[0].endX - width * 0.5) > 10) {
       wavesRef.current = initializeWaves(width, height);
@@ -304,10 +313,20 @@ export default function FlowBackground({
       drawWave(ctx, wave, timeRef.current);
     });
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
+    } catch (error) {
+      // Silently handle errors to prevent crashes on mobile
+      if (process.env.NODE_ENV === 'development') {
+        console.error('FlowBackground animation error:', error);
+      }
+    }
   };
 
   useEffect(() => {
+    // CRITICAL: Never run on mobile - check immediately and bail out
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return;
+    }
     if (!isDesktop) return;
     
     const canvas = canvasRef.current;
@@ -327,6 +346,7 @@ export default function FlowBackground({
       resizeObserver.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = undefined;
       }
     };
   }, [speed, reducedMotion, isDesktop]);

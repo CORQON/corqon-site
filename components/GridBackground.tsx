@@ -313,23 +313,32 @@ export default function GridBackground({ className = '' }: GridBackgroundProps) 
   };
 
   const animate = () => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    try {
+      const canvas = canvasRef.current;
+      const container = containerRef.current;
+      if (!canvas || !container) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      // CRITICAL: Never run on mobile - check immediately and bail out
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return;
+      }
 
-    const rect = container.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const dpr = window.devicePixelRatio || 1;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-    ctx.scale(dpr, dpr);
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      // CRITICAL: Cap DPR to 1 on mobile to prevent memory issues
+      const dpr = typeof window !== 'undefined' && window.innerWidth < 768 
+        ? 1 
+        : (window.devicePixelRatio || 1);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
 
     const cellSize = getCellSize(width);
     gridConfigRef.current.cellSize = cellSize;
@@ -379,13 +388,23 @@ export default function GridBackground({ className = '' }: GridBackgroundProps) 
       }
     }
 
-    drawGrid(ctx, width, height);
-    drawPulses(ctx, width, height);
+      drawGrid(ctx, width, height);
+      drawPulses(ctx, width, height);
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
+    } catch (error) {
+      // Silently handle errors to prevent crashes on mobile
+      if (process.env.NODE_ENV === 'development') {
+        console.error('GridBackground animation error:', error);
+      }
+    }
   };
 
   useEffect(() => {
+    // CRITICAL: Never run on mobile - check immediately and bail out
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return;
+    }
     if (!isDesktop) return;
     
     const canvas = canvasRef.current;
@@ -407,6 +426,7 @@ export default function GridBackground({ className = '' }: GridBackgroundProps) 
       resizeObserver.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = undefined;
       }
     };
   }, [reducedMotion, isDesktop]);

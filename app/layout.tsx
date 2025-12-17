@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import GlobalErrorHandler from '@/components/GlobalErrorHandler';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -14,6 +15,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'CORQON - Turn vitality into measurable performance',
   description: 'AI-driven platform that improves employee vitality, focus and work performance through actionable insights.',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -34,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
       <body className="min-h-screen bg-[#0a0a0a] overflow-x-hidden">
+        <GlobalErrorHandler />
         <ErrorBoundary>
           <div className="relative min-h-screen flex flex-col overflow-x-hidden">
             <Navbar />
