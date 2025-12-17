@@ -1,0 +1,750 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --corqon-blue: #3b82f6;
+  --corqon-green: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.hero-gradient-fade {
+  background: linear-gradient(to bottom, transparent 0%, transparent 50%, #0a0a0a 100%);
+}
+
+.cta-grid-fade {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
+}
+
+.btn-gradient {
+  background: linear-gradient(to bottom, rgba(40,40,40,0.70), rgba(15,15,15,0.55)), linear-gradient(to right, rgba(255,255,255,0.06), transparent 40%, rgba(255,255,255,0.04)) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(to bottom, rgba(50,50,50,0.75), rgba(25,25,25,0.60)), linear-gradient(to right, rgba(255,255,255,0.08), transparent 40%, rgba(255,255,255,0.05)) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.dashboard-frame-gradient {
+  background: linear-gradient(to bottom, rgba(40,40,40,0.70), rgba(15,15,15,0.55)), linear-gradient(to right, rgba(255,255,255,0.06), transparent 40%, rgba(255,255,255,0.04)) !important;
+}
+
+.hero-headline {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.logos-scroll {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  animation: scroll 30s linear infinite;
+  width: fit-content;
+}
+
+.logos-container {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* Dotted Grid Overlay - Full width with side fades */
+.dotted-grid-overlay {
+  /* Create dotted grid pattern using radial gradients for dots */
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 0;
+  
+  /* Combined mask: vertical fade (top/bottom) and horizontal fade (left/right sides) */
+  /* Using a single mask with radial gradient for better browser compatibility */
+  mask-image: 
+    radial-gradient(
+      ellipse 100% 100% at 50% 50%,
+      black 0%,
+      black 35%,
+      rgba(0, 0, 0, 0.8) 40%,
+      rgba(0, 0, 0, 0.4) 45%,
+      transparent 50%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 5%,
+      rgba(0, 0, 0, 0.3) 8%,
+      black 12%,
+      black 75%,
+      rgba(0, 0, 0, 0.5) 80%,
+      rgba(0, 0, 0, 0.2) 85%,
+      transparent 92%,
+      transparent 100%
+    );
+  mask-composite: intersect;
+  -webkit-mask-image: 
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 5%,
+      rgba(0, 0, 0, 0.5) 8%,
+      black 12%,
+      black 88%,
+      rgba(0, 0, 0, 0.5) 92%,
+      rgba(0, 0, 0, 0.2) 95%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 5%,
+      rgba(0, 0, 0, 0.3) 8%,
+      black 12%,
+      black 75%,
+      rgba(0, 0, 0, 0.5) 80%,
+      rgba(0, 0, 0, 0.2) 85%,
+      transparent 92%,
+      transparent 100%
+    );
+  -webkit-mask-composite: source-in;
+}
+
+/* Confidence Loop Visual System */
+.confidence-loop-bg {
+  background: radial-gradient(
+    circle at center,
+    rgba(34, 197, 94, 0.06) 0%,
+    rgba(34, 197, 94, 0.03) 30%,
+    rgba(34, 197, 94, 0.01) 50%,
+    transparent 75%
+  );
+}
+
+/* Progress Arc Animation */
+@keyframes progressArcAdvance {
+  0% {
+    stroke-dashoffset: 565.48;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.confidence-progress-arc {
+  will-change: stroke-dashoffset;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confidence-progress-arc {
+    animation: none;
+  }
+}
+
+/* Ring Container with Breathing Pulse */
+@keyframes corqon-ring-breathe {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.98;
+    transform: scale(0.995);
+  }
+}
+
+.confidence-loop-container {
+  animation: corqon-ring-breathe 4s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confidence-loop-container {
+    animation: none;
+  }
+}
+
+/* Ring Hover Effect */
+.group:hover .confidence-loop-ring {
+  filter: brightness(1.1);
+}
+
+.group:hover .confidence-node-inactive {
+  opacity: 0.7;
+}
+
+/* Completion Sweep Animation */
+@keyframes corqon-ring-sweep {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+.confidence-loop-sweep {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(34, 197, 94, 0.35) 310deg,
+    rgba(34, 197, 94, 0.5) 320deg,
+    rgba(34, 197, 94, 0.6) 330deg,
+    rgba(34, 197, 94, 0.5) 340deg,
+    rgba(34, 197, 94, 0.35) 350deg,
+    transparent 360deg
+  );
+  animation: corqon-ring-sweep 10s linear infinite;
+  pointer-events: none;
+  mask: radial-gradient(
+    circle,
+    transparent calc(50% - 2px),
+    black calc(50% - 2px),
+    black calc(50% + 2px),
+    transparent calc(50% + 2px)
+  );
+  -webkit-mask: radial-gradient(
+    circle,
+    transparent calc(50% - 2px),
+    black calc(50% - 2px),
+    black calc(50% + 2px),
+    transparent calc(50% + 2px)
+  );
+}
+
+
+/* Synchronized Inner Glow - Controlled by React state */
+.confidence-loop-sweep-sync {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(34, 197, 94, 0.35) 310deg,
+    rgba(34, 197, 94, 0.5) 320deg,
+    rgba(34, 197, 94, 0.6) 330deg,
+    rgba(34, 197, 94, 0.5) 340deg,
+    rgba(34, 197, 94, 0.35) 350deg,
+    transparent 360deg
+  );
+  pointer-events: none;
+  mask: radial-gradient(
+    circle,
+    transparent calc(50% - 2px),
+    black calc(50% - 2px),
+    black calc(50% + 2px),
+    transparent calc(50% + 2px)
+  );
+  -webkit-mask: radial-gradient(
+    circle,
+    transparent calc(50% - 2px),
+    black calc(50% - 2px),
+    black calc(50% + 2px),
+    transparent calc(50% + 2px)
+  );
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .confidence-loop-sweep {
+    animation: none;
+    opacity: 0.2;
+  }
+  
+  .confidence-loop-sweep-sync {
+    transition: none;
+  }
+}
+
+/* Confidence Node Styles - Pill-like Badges */
+.confidence-node-active {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(22, 163, 74, 0.95));
+  border: 1.5px solid rgba(34, 197, 94, 0.6);
+  box-shadow: 
+    0 0 12px rgba(34, 197, 94, 0.6),
+    0 0 24px rgba(34, 197, 94, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: corqon-node-pulse 2.5s ease-in-out infinite;
+}
+
+.confidence-node-inactive {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Active Node Glow */
+.confidence-node-glow {
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.5) 0%,
+    rgba(34, 197, 94, 0.3) 50%,
+    transparent 100%
+  );
+  filter: blur(6px);
+  animation: corqon-node-pulse 2.5s ease-in-out infinite;
+}
+
+/* Node Pulse Animation */
+@keyframes corqon-node-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confidence-node-active,
+  .confidence-node-glow {
+    animation: none;
+  }
+}
+
+/* Text Clamping Utilities */
+.corqon-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.corqon-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.corqon-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Card Visual Hierarchy */
+.inactive-card {
+  opacity: 0.78;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+/* Spacing Rhythm - Guide Scan Path */
+@media (min-width: 1024px) {
+  .active-card {
+    margin-top: 4px;
+  }
+}
+
+.active-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Card Interactions */
+.card-interaction {
+  position: relative;
+}
+
+.card-interaction:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.active-card:hover {
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-interaction:hover {
+    transform: none;
+  }
+}
+
+/* System Tiles - Open Frame Structure */
+
+/* Reusable Dotted Line Utilities - Based on chatbot dots but denser spacing (10px vs 24px) */
+
+/* Vertical Dotted Line */
+.corqon-dots-v {
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1.6px);
+  background-size: 10px 10px;
+  background-position: center;
+  background-repeat: repeat-y;
+}
+
+/* Horizontal Dotted Line */
+.corqon-dots-h {
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1.6px);
+  background-size: 10px 10px;
+  background-position: center;
+  background-repeat: repeat-x;
+}
+
+/* Open Frame Container - No background, no top border */
+.system-tiles-open-frame {
+  min-height: 200px;
+}
+
+/* Segment - Transparent background, text sits on page background */
+.system-tile-segment-open {
+  min-height: 200px;
+  /* No background - transparent by default */
+}
+
+/* Hover Gradient Wash - Subtle, only on hover */
+.system-tile-hover-wash {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 50%,
+    transparent 100%
+  );
+  transition: opacity 250ms ease;
+}
+
+/* Scrollbar Hide Utility */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Dotted Frame for Chat Demo */
+.dotted-frame-v {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.18) 0,
+    rgba(255, 255, 255, 0.18) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+.dotted-frame-h {
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.18) 0,
+    rgba(255, 255, 255, 0.18) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+/* Open Top Dotted Frame - Premium frame for chatbot */
+.open-top-dotted-frame-v {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.18) 0px,
+    rgba(255, 255, 255, 0.18) 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+.open-top-dotted-frame-h {
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.18) 0px,
+    rgba(255, 255, 255, 0.18) 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+/* Dotted Divider - Full width horizontal divider */
+.dotted-divider-h {
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.18) 0px,
+    rgba(255, 255, 255, 0.18) 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+/* Scanning Dots Animation for Decision Inputs Panel */
+@keyframes scanning-dot {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scanning-dot {
+  animation: scanning-dot 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scanning-dot {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* CORQON Dots Animation for Decision Inputs Panel */
+@keyframes corqonDots {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
+
+.animate-corqon-dots {
+  animation: corqonDots 1.2s ease-in-out infinite;
+}
+
+/* CORQON Pop Animation for Checkmark */
+@keyframes corqonPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-corqon-pop {
+  animation: corqonPop 150ms ease-out;
+}
+
+/* Fade In Animation for Definitions Panel */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-corqon-dots,
+  .animate-corqon-pop,
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Premium CTA Glass Effect with Subtle Blue Glow */
+.corqon-cta-pop {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 0 0 1px rgba(59, 130, 246, 0.14),
+    0 30px 90px rgba(0, 0, 0, 0.55),
+    0 0 70px rgba(59, 130, 246, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* Soft spotlight behind headline area */
+.corqon-cta-pop::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(255, 255, 255, 0.10) 0%,
+    rgba(59, 130, 246, 0.06) 28%,
+    rgba(0, 0, 0, 0) 62%
+  );
+  opacity: 0.9;
+}
+
+/* Micro-noise overlay */
+.corqon-cta-pop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.10;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+/* Premium Footer with Watermark and Bottom Glow */
+.corqon-footer-premium {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Bottom glow fade */
+.corqon-footer-premium::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -80px;
+  height: 320px;
+  pointer-events: none;
+
+  background: radial-gradient(
+    closest-side at 50% 100%,
+    rgba(255,255,255,0.10) 0%,
+    rgba(255,255,255,0.05) 35%,
+    rgba(0,0,0,0) 75%
+  );
+}
+
+/* SVG Watermark with Edge Sweep */
+.corqon-footer-mark {
+  position: absolute;
+  left: clamp(16px, 6vw, 96px);
+  top: 55%;
+  width: clamp(360px, 38vw, 560px);
+  aspect-ratio: 1 / 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+
+  /* Soft fade so it blends into the footer */
+  -webkit-mask-image: radial-gradient(circle at 35% 55%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 72%);
+  mask-image: radial-gradient(circle at 35% 55%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 72%);
+}
+
+.corqon-footer-mark-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Rotate the sweep band around the logo */
+.corqon-footer-sweep-rot {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  animation: corqonFooterSweep 7.5s linear infinite;
+}
+
+@keyframes corqonFooterSweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corqon-footer-sweep-rot {
+    animation: none;
+  }
+}
+
+/* CORQON Section Spacing System */
+@layer utilities {
+  /* Default spacing for most sections */
+  .corqon-section {
+    @apply py-14 sm:py-16 lg:py-20;
+  }
+
+  /* Slightly tighter for "dense" sections (like Weekly Data Briefing header area) */
+  .corqon-section-tight {
+    @apply py-10 sm:py-12 lg:py-16;
+  }
+
+  /* Slightly looser for hero / final CTA */
+  .corqon-section-loose {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+}
