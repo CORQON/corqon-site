@@ -60,11 +60,11 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 pt-4 pb-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+      <nav className="fixed top-0 left-0 right-0 z-50 pt-2 pb-2 md:pt-4 md:pb-4">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12">
           <div className="flex justify-center">
             <div
-              className={`grid grid-cols-3 items-center h-14 px-4 sm:px-6 md:px-8 ${
+              className={`grid grid-cols-3 items-center h-10 md:h-14 px-2 sm:px-3 md:px-4 lg:px-6 ${
                 isScrolled
                   ? 'rounded-full backdrop-blur-sm md:backdrop-blur-xl border shadow-lg'
                   : ''
@@ -80,13 +80,13 @@ export default function Navbar() {
             >
               {/* Left: Logo */}
               <div className="flex items-center">
-                <Link href="/" className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white hover:opacity-80" onClick={closeMobileMenu}>
+                <Link href="/" className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base md:text-lg font-semibold text-white hover:opacity-80" onClick={closeMobileMenu}>
                   <Image
                     src="/corqon-symbol.png"
                     alt="CORQON"
                     width={36}
                     height={36}
-                    className="h-7 w-7 sm:h-8 sm:w-8 shrink-0"
+                    className="h-5 w-5 sm:h-7 sm:w-7 md:h-8 md:w-8 shrink-0"
                     priority
                   />
                   <span className="hidden sm:inline">CORQON</span>
@@ -113,21 +113,21 @@ export default function Navbar() {
               </div>
 
               {/* Right: CTA + Mobile Menu Button */}
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center justify-end gap-1.5 sm:gap-2">
                 {/* Mobile Menu Button - Only visible on mobile */}
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="md:hidden p-2 text-white/70 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/20 rounded"
+                  className="md:hidden p-1.5 sm:p-2 text-white/70 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/20 rounded"
                   aria-label="Toggle menu"
                   aria-expanded={isMobileMenuOpen}
                   aria-controls="mobile-menu"
                 >
                   {isMobileMenuOpen ? (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   )}
@@ -135,10 +135,11 @@ export default function Navbar() {
                 {/* CTA Button */}
                 <Link 
                   href="/contact#schedule" 
-                  className="px-4 sm:px-5 py-2 bg-gray-900 btn-gradient text-white rounded-full font-medium hover:bg-gray-800 transition-all text-xs sm:text-sm whitespace-nowrap min-h-[44px] flex items-center justify-center"
+                  className="px-2.5 sm:px-3 md:px-4 lg:px-5 py-1.5 sm:py-2 bg-gray-900 btn-gradient text-white rounded-full font-medium hover:bg-gray-800 transition-all text-[10px] sm:text-xs md:text-sm whitespace-nowrap min-h-[36px] sm:min-h-[40px] md:min-h-[44px] flex items-center justify-center"
                   onClick={closeMobileMenu}
                 >
-                  Plan a pilot
+                  <span className="hidden xs:inline">Plan a pilot</span>
+                  <span className="xs:hidden">Pilot</span>
                 </Link>
               </div>
             </div>
@@ -158,11 +159,11 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         id="mobile-menu"
-        className={`fixed top-0 left-0 right-0 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 right-0 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
         style={{
-          top: '88px', // Height of navbar + padding
+          top: '56px', // Height of mobile navbar (h-10 = 40px) + padding (pt-2 pb-2 = 16px)
         }}
       >
         <div className="bg-neutral-900/95 backdrop-blur-sm md:backdrop-blur-xl border-b border-white/10 shadow-xl">

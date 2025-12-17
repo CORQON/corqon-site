@@ -10,8 +10,9 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="corqon-footer-premium relative overflow-hidden border-t border-white/10 bg-black/40 backdrop-blur-sm z-10">
-      <div className="corqon-footer-mark" aria-hidden="true">
+    <footer className="corqon-footer-premium relative overflow-hidden border-t border-white/10 bg-black/40 backdrop-blur-sm z-10 mt-auto">
+      {/* Desktop-only watermark - hidden on mobile to prevent crashes */}
+      <div className="hidden md:block corqon-footer-mark" aria-hidden="true">
         <svg viewBox="0 0 1000 1000" className="corqon-footer-mark-svg" role="presentation">
           <defs>
             {/* Extract edge from PNG alpha */}
@@ -70,30 +71,30 @@ export default function Footer() {
         </svg>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-10 md:py-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10 lg:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {/* Brand */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4">CORQON</h3>
-            <p className="text-white/60 text-sm leading-relaxed mb-4">
+          <div className="min-w-0">
+            <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">CORQON</h3>
+            <p className="text-white/60 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
               Corqon connects your operational data streams and detects systemic performance loss early. AI surfaces patterns behind instability, rework, and hidden margin erosion.
             </p>
             <a 
               href="mailto:info@corqon.com" 
-              className="text-sm text-white/60 hover:text-white/90 transition-colors"
+              className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors break-all"
             >
               info@corqon.com
             </a>
           </div>
           
           {/* Product */}
-          <div>
-            <h4 className="text-sm font-semibold text-white/80 mb-4">Product</h4>
-            <ul className="space-y-3">
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-semibold text-white/80 mb-3 sm:mb-4">Product</h4>
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
                   href="/#datastreams" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Datastreams
                 </Link>
@@ -101,7 +102,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#briefing-chat" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Advisor
                 </Link>
@@ -109,7 +110,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#weekly-data" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Briefing
                 </Link>
@@ -117,7 +118,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#faq-assistant" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   FAQ
                 </Link>
@@ -125,7 +126,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#pricing" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Pricing
                 </Link>
@@ -134,13 +135,13 @@ export default function Footer() {
           </div>
           
           {/* Company */}
-          <div>
-            <h4 className="text-sm font-semibold text-white/80 mb-4">Company</h4>
-            <ul className="space-y-3">
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-semibold text-white/80 mb-3 sm:mb-4">Company</h4>
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
                   href="/contact" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Contact
                 </Link>
@@ -148,7 +149,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/contact#schedule" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Plan a pilot
                 </Link>
@@ -157,13 +158,13 @@ export default function Footer() {
           </div>
           
           {/* Legal & Social */}
-          <div>
-            <h4 className="text-sm font-semibold text-white/80 mb-4">Legal</h4>
-            <ul className="space-y-3 mb-6">
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-semibold text-white/80 mb-3 sm:mb-4">Legal</h4>
+            <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
               <li>
                 <Link 
                   href="/terms" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Terms of Service
                 </Link>
@@ -171,7 +172,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/privacy" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Privacy Policy
                 </Link>
@@ -179,15 +180,15 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/cookies" 
-                  className="text-sm text-white/60 hover:text-white/90 transition-colors"
+                  className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors"
                 >
                   Cookie Policy
                 </Link>
               </li>
             </ul>
 
-            <h4 className="text-sm font-semibold text-white/80 mb-4">Social</h4>
-            <div className="flex gap-4">
+            <h4 className="text-xs sm:text-sm font-semibold text-white/80 mb-3 sm:mb-4">Social</h4>
+            <div className="flex gap-3 sm:gap-4">
               <a 
                 href={SOCIAL.x}
                 target="_blank"
@@ -225,8 +226,8 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 border-t border-white/10">
-          <p className="text-white/40 text-xs sm:text-sm text-center">
+        <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 pt-4 sm:pt-6 md:pt-8 border-t border-white/10">
+          <p className="text-white/40 text-[10px] sm:text-xs md:text-sm text-center">
             © {currentYear} CORQON. All rights reserved.
           </p>
         </div>

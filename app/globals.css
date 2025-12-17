@@ -699,22 +699,24 @@ a {
   overflow: hidden;
 }
 
-/* Bottom glow fade */
-.corqon-footer-premium::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -80px;
-  height: 320px;
-  pointer-events: none;
+/* Bottom glow fade - Desktop only to prevent mobile black space */
+@media (min-width: 768px) {
+  .corqon-footer-premium::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -80px;
+    height: 320px;
+    pointer-events: none;
 
-  background: radial-gradient(
-    closest-side at 50% 100%,
-    rgba(255,255,255,0.10) 0%,
-    rgba(255,255,255,0.05) 35%,
-    rgba(0,0,0,0) 75%
-  );
+    background: radial-gradient(
+      closest-side at 50% 100%,
+      rgba(255,255,255,0.10) 0%,
+      rgba(255,255,255,0.05) 35%,
+      rgba(0,0,0,0) 75%
+    );
+  }
 }
 
 /* SVG Watermark with Edge Sweep */
