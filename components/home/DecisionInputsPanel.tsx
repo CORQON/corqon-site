@@ -59,6 +59,13 @@ export default function DecisionInputsPanel() {
   }, []);
 
   useEffect(() => {
+    // Disable ALL animations on mobile - just show static done state
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setStreamStatuses(['done', 'done', 'done', 'done']);
+      setActiveIndex(0);
+      return;
+    }
+
     if (prefersReducedMotion) {
       // Set all streams to done state immediately, no cycling
       setStreamStatuses(['done', 'done', 'done', 'done']);
@@ -182,15 +189,15 @@ export default function DecisionInputsPanel() {
                       <div className="flex items-center gap-1.5">
                         <div className="flex gap-0.5">
                           <div
-                            className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
+                            className="w-1 h-1 rounded-full bg-[#2F6FFF] md:animate-corqon-dots"
                             style={{ animationDelay: '0ms' }}
                           />
                           <div
-                            className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
+                            className="w-1 h-1 rounded-full bg-[#2F6FFF] md:animate-corqon-dots"
                             style={{ animationDelay: '150ms' }}
                           />
                           <div
-                            className="w-1 h-1 rounded-full bg-[#2F6FFF] animate-corqon-dots"
+                            className="w-1 h-1 rounded-full bg-[#2F6FFF] md:animate-corqon-dots"
                             style={{ animationDelay: '300ms' }}
                           />
                         </div>
@@ -202,7 +209,7 @@ export default function DecisionInputsPanel() {
 
                     {status === 'done' && (
                       <div className="flex items-center gap-1.5">
-                        <div className="px-1.5 py-0.5 rounded-md bg-[#2F6FFF]/15 border border-[#2F6FFF]/25 animate-corqon-pop">
+                        <div className="px-1.5 py-0.5 rounded-md bg-[#2F6FFF]/15 border border-[#2F6FFF]/25 md:animate-corqon-pop">
                           <svg
                             className="w-2.5 h-2.5 text-[#2F6FFF]"
                             fill="none"

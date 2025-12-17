@@ -36,6 +36,16 @@ a {
   text-decoration: none;
 }
 
+/* Disable ALL animations on mobile for smooth performance */
+@media (max-width: 767px) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -570,7 +580,7 @@ a {
   }
 }
 
-/* CORQON Dots Animation for Decision Inputs Panel */
+/* CORQON Dots Animation for Decision Inputs Panel - DESKTOP ONLY */
 @keyframes corqonDots {
   0%, 100% {
     opacity: 0.3;
@@ -583,28 +593,16 @@ a {
 }
 
 .animate-corqon-dots {
-  animation: corqonDots 1.2s ease-in-out infinite;
+  animation: none;
 }
 
-/* Smaller animation on mobile to prevent layout shifts */
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .animate-corqon-dots {
-    animation: corqonDotsMobile 1.2s ease-in-out infinite;
+    animation: corqonDots 1.2s ease-in-out infinite;
   }
 }
 
-@keyframes corqonDotsMobile {
-  0%, 100% {
-    opacity: 0.3;
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-0.25px) scale(1);
-  }
-}
-
-/* CORQON Pop Animation for Checkmark */
+/* CORQON Pop Animation for Checkmark - DESKTOP ONLY */
 @keyframes corqonPop {
   0% {
     opacity: 0;
@@ -617,24 +615,12 @@ a {
 }
 
 .animate-corqon-pop {
-  animation: corqonPop 150ms ease-out;
+  animation: none;
 }
 
-/* Smaller pop animation on mobile */
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .animate-corqon-pop {
-    animation: corqonPopMobile 150ms ease-out;
-  }
-}
-
-@keyframes corqonPopMobile {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
+    animation: corqonPop 150ms ease-out;
   }
 }
 
