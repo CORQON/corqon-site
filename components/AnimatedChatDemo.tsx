@@ -88,6 +88,7 @@ export default function AnimatedChatDemo() {
   const [contextStage, setContextStage] = useState<ContextStage>('import');
   const [isDeepLinked, setIsDeepLinked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   const userTypewriterIntervalRef = useRef<number | null>(null);
   const assistantTypewriterIntervalRef = useRef<number | null>(null);
@@ -107,15 +108,15 @@ export default function AnimatedChatDemo() {
     setShowTypingIndicator(false);
     setStage('assistant-streaming');
 
-    // Respect reduced motion preference
-    if (prefersReducedMotion.current) {
+    // On mobile or reduced motion, show text instantly
+    if (isMobile || prefersReducedMotion.current) {
       setAssistantText(fullResponse);
       setStage('complete');
       onComplete?.();
       return;
     }
 
-    // Typewriter animation
+    // Typewriter animation (desktop only)
     let assistantIndex = 0;
     const typingSpeed = 18; // milliseconds per character (same as normal flow)
     
@@ -132,7 +133,7 @@ export default function AnimatedChatDemo() {
         onComplete?.();
       }
     }, typingSpeed);
-  }, []);
+  }, [isMobile]);
 
   // Single source of truth send function
   const sendMessage = useCallback(async (text?: string) => {
@@ -208,8 +209,9 @@ export default function AnimatedChatDemo() {
   useEffect(() => {
     setMounted(true);
     
-    // Check for reduced motion preference
+    // Check for mobile and reduced motion preference
     if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768);
       const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
       prefersReducedMotion.current = mediaQuery.matches;
     }
@@ -320,13 +322,14 @@ export default function AnimatedChatDemo() {
 
   const scrollToBottom = (smooth: boolean = false) => {
     if (messagesContainerRef.current) {
-      if (smooth && !prefersReducedMotion.current) {
+      // On mobile, always use instant scroll
+      if (isMobile || !smooth || prefersReducedMotion.current) {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      } else {
         messagesContainerRef.current.scrollTo({
           top: messagesContainerRef.current.scrollHeight,
           behavior: 'smooth',
         });
-      } else {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
       }
     }
   };
@@ -368,7 +371,8 @@ export default function AnimatedChatDemo() {
     setShowTypingIndicator(false);
     setSelectedWeek(48);
 
-    if (prefersReducedMotion.current) {
+    // On mobile or reduced motion, skip all animations
+    if (isMobile || prefersReducedMotion.current) {
       // Skip context stages, show ready state immediately
       setContextStage('ready');
       setStage('ready');
@@ -492,7 +496,15 @@ export default function AnimatedChatDemo() {
       return;
     }
     
-    // Start animation after a short delay
+    // On mobile, skip auto-animation entirely
+    if (isMobile) {
+      setContextStage('ready');
+      setStage('ready');
+      setSelectedWeek(50);
+      return;
+    }
+    
+    // Start animation after a short delay (desktop only)
     const initialDelay = window.setTimeout(() => {
       startAnimation();
     }, 500);
@@ -501,7 +513,7 @@ export default function AnimatedChatDemo() {
       clearAllTimers();
       clearTimeout(initialDelay);
     };
-  }, [mounted, isDeepLinked]);
+  }, [mounted, isDeepLinked, isMobile]);
 
   if (!mounted) {
     return null;

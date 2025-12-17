@@ -36,19 +36,55 @@ a {
   text-decoration: none;
 }
 
-/* Disable ALL animations and backdrop-blur on mobile for smooth performance - prevent crashes */
+/* Disable ALL animations and performance-heavy effects on mobile for smooth performance - prevent crashes */
 @media (max-width: 767px) {
   *,
   *::before,
   *::after {
     animation: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
   }
   
-  /* Keep essential transitions for UI interactions */
-  a, button, input, textarea, select {
-    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease !important;
+  /* Disable Tailwind animations specifically */
+  .animate-bounce,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+  }
+  
+  /* Disable transitions that could cause performance issues */
+  * {
+    transition: none !important;
+  }
+  
+  /* Disable ALL backdrop filters and blur effects on mobile - major performance killer */
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+  }
+  
+  /* Disable will-change and hardware acceleration hints on mobile */
+  * {
+    will-change: auto !important;
+    transform: none !important;
+    transform-style: flat !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+  }
+  
+  /* Disable box-shadow on mobile for better performance */
+  * {
+    box-shadow: none !important;
+  }
+  
+  /* Only keep minimal transitions for essential UI feedback */
+  a:active, button:active {
+    transition: opacity 0.1s ease !important;
   }
 }
 
@@ -113,6 +149,13 @@ a {
   gap: 3rem;
   animation: scroll 30s linear infinite;
   width: fit-content;
+}
+
+/* Disable logos scroll animation on mobile */
+@media (max-width: 767px) {
+  .logos-scroll {
+    animation: none !important;
+  }
 }
 
 .logos-container {
@@ -207,6 +250,15 @@ a {
   backface-visibility: hidden;
 }
 
+/* Disable hardware acceleration on mobile */
+@media (max-width: 767px) {
+  .confidence-progress-arc {
+    will-change: auto !important;
+    transform: none !important;
+    backface-visibility: visible !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .confidence-progress-arc {
     animation: none;
@@ -229,6 +281,20 @@ a {
   animation: corqon-ring-breathe 4s ease-in-out infinite;
   will-change: transform, opacity;
   transform: translateZ(0);
+}
+
+/* Disable hardware acceleration on mobile */
+@media (max-width: 767px) {
+  .confidence-loop-container {
+    will-change: auto !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .confidence-loop-container {
+    animation: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -291,6 +357,13 @@ a {
   );
 }
 
+/* Disable sweep animation on mobile */
+@media (max-width: 767px) {
+  .confidence-loop-sweep {
+    animation: none !important;
+  }
+}
+
 
 /* Synchronized Inner Glow - Controlled by React state */
 .confidence-loop-sweep-sync {
@@ -325,6 +398,15 @@ a {
   backface-visibility: hidden;
 }
 
+/* Disable hardware acceleration on mobile */
+@media (max-width: 767px) {
+  .confidence-loop-sweep-sync {
+    will-change: auto !important;
+    transform: none !important;
+    backface-visibility: visible !important;
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   .confidence-loop-sweep {
@@ -346,6 +428,14 @@ a {
     0 0 24px rgba(34, 197, 94, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   animation: corqon-node-pulse 2.5s ease-in-out infinite;
+}
+
+/* Disable node pulse animation on mobile */
+@media (max-width: 767px) {
+  .confidence-node-active,
+  .confidence-node-glow {
+    animation: none !important;
+  }
 }
 
 .confidence-node-inactive {
@@ -418,6 +508,14 @@ a {
   backdrop-filter: blur(8px);
 }
 
+/* Disable backdrop-filter on mobile */
+@media (max-width: 767px) {
+  .inactive-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
 /* Spacing Rhythm - Guide Scan Path */
 @media (min-width: 1024px) {
   .active-card {
@@ -434,6 +532,15 @@ a {
     0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
+/* Disable backdrop-filter and box-shadow on mobile */
+@media (max-width: 767px) {
+  .active-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+}
+
 /* Card Interactions */
 .card-interaction {
   position: relative;
@@ -444,10 +551,24 @@ a {
   transform: translateY(-1px);
 }
 
+/* Disable hover transforms on mobile */
+@media (max-width: 767px) {
+  .card-interaction:hover {
+    transform: none !important;
+  }
+}
+
 .active-card:hover {
   box-shadow: 
     0 6px 16px rgba(0, 0, 0, 0.2),
     0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* Disable hover box-shadow on mobile */
+@media (max-width: 767px) {
+  .active-card:hover {
+    box-shadow: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -579,6 +700,13 @@ a {
   animation: scanning-dot 1.2s ease-in-out infinite;
 }
 
+@media (max-width: 767px) {
+  .animate-scanning-dot {
+    animation: none !important;
+    opacity: 0.5;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-scanning-dot {
     animation: none;
@@ -644,6 +772,16 @@ a {
   animation: fadeIn 200ms ease-out;
 }
 
+@media (max-width: 767px) {
+  .animate-corqon-dots,
+  .animate-corqon-pop,
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-corqon-dots,
   .animate-corqon-pop,
@@ -667,6 +805,15 @@ a {
     0 0 70px rgba(59, 130, 246, 0.06);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+}
+
+/* Disable backdrop-filter and box-shadow on mobile */
+@media (max-width: 767px) {
+  .corqon-cta-pop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
 }
 
 /* Soft spotlight behind headline area */
