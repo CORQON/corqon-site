@@ -304,6 +304,11 @@ export default function FlowBackground({
     const container = containerRef.current;
     if (!canvas || !container) return;
 
+    // Don't initialize on mobile (below md breakpoint)
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return;
+    }
+
     wavesRef.current = [];
 
     const resizeObserver = new ResizeObserver(() => {
@@ -322,7 +327,7 @@ export default function FlowBackground({
   }, [speed, reducedMotion]);
 
   return (
-    <div ref={containerRef} className={`absolute inset-0 overflow-hidden ${className}`}>
+    <div ref={containerRef} className={`absolute inset-0 overflow-hidden ${className} hidden md:block`}>
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"

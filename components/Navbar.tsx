@@ -9,8 +9,15 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     handleScroll();
@@ -25,6 +32,20 @@ export default function Navbar() {
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
+      
+      // Close menu on escape key
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          closeMobileMenu();
+        }
+      };
+      
+      document.addEventListener('keydown', handleEscape);
+      
+      return () => {
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', handleEscape);
+      };
     } else {
       document.body.style.overflow = '';
     }
@@ -45,7 +66,7 @@ export default function Navbar() {
             <div
               className={`grid grid-cols-3 items-center h-14 px-4 sm:px-6 md:px-8 ${
                 isScrolled
-                  ? 'rounded-full backdrop-blur-xl border shadow-lg'
+                  ? 'rounded-full backdrop-blur-sm md:backdrop-blur-xl border shadow-lg'
                   : ''
               }`}
               style={
@@ -144,7 +165,7 @@ export default function Navbar() {
           top: '88px', // Height of navbar + padding
         }}
       >
-        <div className="bg-neutral-900/95 backdrop-blur-xl border-b border-white/10 shadow-xl">
+        <div className="bg-neutral-900/95 backdrop-blur-sm md:backdrop-blur-xl border-b border-white/10 shadow-xl">
           <div className="max-w-7xl mx-auto px-4 py-6">
             <nav className="flex flex-col space-y-4">
               <a
