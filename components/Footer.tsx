@@ -10,67 +10,59 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="corqon-footer-premium relative overflow-hidden border-t border-white/10 bg-black/40 backdrop-blur-sm z-10 mt-auto">
-      {/* Desktop-only watermark - hidden on mobile to prevent crashes */}
-      <div className="hidden md:block corqon-footer-mark" aria-hidden="true">
-        <svg viewBox="0 0 1000 1000" className="corqon-footer-mark-svg" role="presentation">
-          <defs>
-            {/* Extract edge from PNG alpha */}
-            <filter id="corqonEdge" x="-20%" y="-20%" width="140%" height="140%">
-              <feMorphology in="SourceAlpha" operator="dilate" radius="2.5" result="dilated" />
-              <feComposite in="dilated" in2="SourceAlpha" operator="out" result="edge" />
-              <feGaussianBlur in="edge" stdDeviation="0.6" result="edgeBlur" />
-            </filter>
-
-            {/* Soft glow for the sweep, still subtle */}
-            <filter id="corqonSweepGlow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="3.2" result="b" />
-            </filter>
-
-            {/* Mask that only shows the edge ring */}
-            <mask id="corqonEdgeMask">
-              <rect width="100%" height="100%" fill="black" />
-              <image
-                href="/corqon-symbol.png"
-                x="0"
-                y="0"
-                width="1000"
-                height="1000"
-                preserveAspectRatio="xMidYMid meet"
-                filter="url(#corqonEdge)"
-              />
-            </mask>
-
-            {/* Narrow light band */}
-            <linearGradient id="corqonSweepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(59,130,246,0)" />
-              <stop offset="42%" stopColor="rgba(59,130,246,0)" />
-              <stop offset="50%" stopColor="rgba(59,130,246,0.95)" />
-              <stop offset="58%" stopColor="rgba(59,130,246,0)" />
-              <stop offset="100%" stopColor="rgba(59,130,246,0)" />
-            </linearGradient>
-          </defs>
-
-          {/* Base watermark */}
-          <image
-            href="/corqon-symbol.png"
-            x="0"
-            y="0"
-            width="1000"
-            height="1000"
-            preserveAspectRatio="xMidYMid meet"
-            opacity="0.055"
-          />
-
-          {/* Edge sweep constrained to the edge mask */}
-          <g mask="url(#corqonEdgeMask)" opacity="0.55" filter="url(#corqonSweepGlow)">
-            <g className="corqon-footer-sweep-rot">
-              <rect x="-600" y="0" width="2200" height="1000" fill="url(#corqonSweepGrad)" />
+    <footer className="relative border-t border-white/10 bg-black z-10 mt-auto">
+      {/* Desktop-only watermark - completely hidden on mobile */}
+      <div className="hidden md:block corqon-footer-premium relative overflow-hidden">
+        <div className="hidden md:block corqon-footer-mark" aria-hidden="true">
+          <svg viewBox="0 0 1000 1000" className="corqon-footer-mark-svg" role="presentation">
+            <defs>
+              <filter id="corqonEdge" x="-20%" y="-20%" width="140%" height="140%">
+                <feMorphology in="SourceAlpha" operator="dilate" radius="2.5" result="dilated" />
+                <feComposite in="dilated" in2="SourceAlpha" operator="out" result="edge" />
+                <feGaussianBlur in="edge" stdDeviation="0.6" result="edgeBlur" />
+              </filter>
+              <filter id="corqonSweepGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="3.2" result="b" />
+              </filter>
+              <mask id="corqonEdgeMask">
+                <rect width="100%" height="100%" fill="black" />
+                <image
+                  href="/corqon-symbol.png"
+                  x="0"
+                  y="0"
+                  width="1000"
+                  height="1000"
+                  preserveAspectRatio="xMidYMid meet"
+                  filter="url(#corqonEdge)"
+                />
+              </mask>
+              <linearGradient id="corqonSweepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(59,130,246,0)" />
+                <stop offset="42%" stopColor="rgba(59,130,246,0)" />
+                <stop offset="50%" stopColor="rgba(59,130,246,0.95)" />
+                <stop offset="58%" stopColor="rgba(59,130,246,0)" />
+                <stop offset="100%" stopColor="rgba(59,130,246,0)" />
+              </linearGradient>
+            </defs>
+            <image
+              href="/corqon-symbol.png"
+              x="0"
+              y="0"
+              width="1000"
+              height="1000"
+              preserveAspectRatio="xMidYMid meet"
+              opacity="0.055"
+            />
+            <g mask="url(#corqonEdgeMask)" opacity="0.55" filter="url(#corqonSweepGlow)">
+              <g className="corqon-footer-sweep-rot">
+                <rect x="-600" y="0" width="2200" height="1000" fill="url(#corqonSweepGrad)" />
+              </g>
             </g>
-          </g>
-        </svg>
+          </svg>
+        </div>
       </div>
 
+      {/* Footer Content - Simple on mobile, full on desktop */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10 lg:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {/* Brand */}

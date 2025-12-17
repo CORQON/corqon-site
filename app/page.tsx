@@ -25,7 +25,7 @@ export default function Home() {
     <div>
       <HashScrollHandler />
       {/* Hero Section */}
-      <section data-hero id="hero" className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pt-36 lg:pb-20 overflow-hidden corqon-section-loose">
+      <section data-hero id="hero" className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pt-36 lg:pb-20 overflow-hidden corqon-section-loose">
         <GridHeroBackground />
         <div className="absolute inset-0 z-[1] pointer-events-none hero-gradient-fade"></div>
         <div className="relative z-10">
