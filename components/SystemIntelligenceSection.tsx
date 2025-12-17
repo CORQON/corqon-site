@@ -88,7 +88,7 @@ export default function SystemIntelligenceSection() {
 
   // Progress clock using requestAnimationFrame with optimized updates
   useEffect(() => {
-    // Don't run animations on mobile - check immediately and never start animation loop
+    // CRITICAL: Don't run animations on mobile - check immediately and never start animation loop
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
       // Just set initial state on mobile, no animation, no requestAnimationFrame
       setProgress(0);
@@ -98,7 +98,13 @@ export default function SystemIntelligenceSection() {
         cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = undefined;
       }
-      return;
+      // Clear any existing intervals
+      return () => {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+          animationFrameRef.current = undefined;
+        }
+      };
     }
     
     // Reset cycle start time to ensure it starts at the top (progress = 0)

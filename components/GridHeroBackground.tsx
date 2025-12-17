@@ -314,7 +314,10 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
     const rect = container.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const dpr = window.devicePixelRatio || 1;
+    // CRITICAL: Cap DPR to 1 on mobile to prevent memory issues
+    const dpr = typeof window !== 'undefined' && window.innerWidth < 768 
+      ? 1 
+      : (window.devicePixelRatio || 1);
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
@@ -364,6 +367,10 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
   };
 
   useEffect(() => {
+    // CRITICAL: Never run on mobile - check immediately and bail out
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return;
+    }
     if (!isDesktop) return;
     
     const canvas = canvasRef.current;
@@ -385,11 +392,15 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
       resizeObserver.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = undefined;
       }
     };
   }, [reducedMotion, isDesktop]);
 
-  // Don't render on mobile at all
+  // CRITICAL: Don't render on mobile at all - prevent mounting
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    return null;
+  }
   if (!isDesktop) {
     return null;
   }

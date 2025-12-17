@@ -23,7 +23,10 @@ export default function Navbar() {
 
   // Desktop-only scroll handler - completely disabled on mobile
   useEffect(() => {
-    if (isMobile) return;
+    // CRITICAL: Never run scroll handler on mobile
+    if (isMobile) {
+      return () => {}; // Return empty cleanup to satisfy React
+    }
     
     let ticking = false;
     const handleScroll = () => {

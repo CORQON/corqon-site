@@ -342,9 +342,13 @@ export default function AnimatedChatDemo() {
   }, [userText, assistantText, showTypingIndicator]);
 
   const clearAllTimers = () => {
-    timersRef.current.forEach(timer => clearTimeout(timer));
+    // Clear all timeouts
+    timersRef.current.forEach(timer => {
+      if (timer) clearTimeout(timer);
+    });
     timersRef.current = [];
     
+    // Clear all intervals
     if (userTypewriterIntervalRef.current) {
       clearInterval(userTypewriterIntervalRef.current);
       userTypewriterIntervalRef.current = null;
@@ -354,6 +358,13 @@ export default function AnimatedChatDemo() {
       assistantTypewriterIntervalRef.current = null;
     }
   };
+  
+  // CRITICAL: Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      clearAllTimers();
+    };
+  }, []);
 
   const addTimer = (callback: () => void, delay: number) => {
     const timer = window.setTimeout(callback, delay);
@@ -496,13 +507,16 @@ export default function AnimatedChatDemo() {
       return;
     }
     
-    // On mobile, skip auto-animation entirely - ensure no timers or intervals run
+    // CRITICAL: On mobile, skip auto-animation entirely - ensure no timers or intervals run
     if (isMobile) {
       clearAllTimers();
       setContextStage('ready');
       setStage('ready');
       setSelectedWeek(50);
-      return;
+      // Return cleanup function to ensure no timers leak
+      return () => {
+        clearAllTimers();
+      };
     }
     
     // Start animation after a short delay (desktop only)
@@ -512,7 +526,9 @@ export default function AnimatedChatDemo() {
 
     return () => {
       clearAllTimers();
-      clearTimeout(initialDelay);
+      if (initialDelay) {
+        clearTimeout(initialDelay);
+      }
     };
   }, [mounted, isDeepLinked, isMobile]);
 

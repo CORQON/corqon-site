@@ -964,9 +964,9 @@ function Tooltip({ content, children }: { content: string; children: React.React
   useEffect(() => {
     if (!isOpen || !containerRef.current || !tooltipRef.current) return;
     
-    // Disable scroll/resize listeners on mobile to prevent crashes
+    // CRITICAL: Disable scroll/resize listeners on mobile to prevent crashes
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return;
+      return () => {}; // Return empty cleanup to satisfy React
     }
 
     const updatePosition = () => {
@@ -1105,9 +1105,9 @@ function KpiCard({
   useEffect(() => {
     if (!isTooltipOpen) return;
     
-    // Disable scroll/resize listeners on mobile to prevent crashes
+    // CRITICAL: Disable scroll/resize listeners on mobile to prevent crashes
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return;
+      return () => {}; // Return empty cleanup to satisfy React
     }
 
     const updatePosition = () => {

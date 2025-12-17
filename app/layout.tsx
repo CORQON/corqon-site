@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -33,13 +34,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
       <body className="min-h-screen bg-[#0a0a0a] overflow-x-hidden">
-        <div className="relative min-h-screen flex flex-col overflow-x-hidden">
-          <Navbar />
-          <main className="flex-1 overflow-x-hidden">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <ErrorBoundary>
+          <div className="relative min-h-screen flex flex-col overflow-x-hidden">
+            <Navbar />
+            <main className="flex-1 overflow-x-hidden min-w-0">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </ErrorBoundary>
       </body>
     </html>
   );
