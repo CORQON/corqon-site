@@ -25,9 +25,14 @@ const INITIAL_SUGGESTIONS = [
 
 export default function FaqAssistantBlock() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
     setMounted(true);
+    // Check if mobile on mount
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768);
+    }
   }, []);
 
   const [messages, setMessages] = useState<Message[]>([
@@ -53,13 +58,14 @@ export default function FaqAssistantBlock() {
 
   const scrollToBottom = (smooth: boolean = false) => {
     if (messagesContainerRef.current) {
-      if (smooth) {
+      // On mobile, always use instant scroll to avoid performance issues
+      if (isMobile || !smooth) {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      } else {
         messagesContainerRef.current.scrollTo({
           top: messagesContainerRef.current.scrollHeight,
           behavior: 'smooth',
         });
-      } else {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
       }
     }
   };
@@ -71,6 +77,17 @@ export default function FaqAssistantBlock() {
       delete typingIntervalsRef.current[messageId];
     }
 
+    // On mobile, show text instantly to avoid performance issues
+    if (isMobile) {
+      setDisplayedTexts(prev => ({ ...prev, [messageId]: fullText }));
+      // Single scroll after text is set
+      setTimeout(() => {
+        scrollToBottom(false);
+      }, 0);
+      return;
+    }
+
+    // Desktop: use typewriter effect
     // Initialize with empty text
     setDisplayedTexts(prev => ({ ...prev, [messageId]: '' }));
 
@@ -132,9 +149,16 @@ export default function FaqAssistantBlock() {
       setDisplayedTexts(prev => ({ ...prev, [limitMessage.id]: limitMessage.text }));
       setLimitMessageShown(true);
       
-      setTimeout(() => {
-        scrollToBottom(true);
-      }, 0);
+      // On mobile, use requestAnimationFrame for better performance
+      if (isMobile) {
+        requestAnimationFrame(() => {
+          scrollToBottom(false);
+        });
+      } else {
+        setTimeout(() => {
+          scrollToBottom(true);
+        }, 0);
+      }
     }
   };
 
@@ -186,9 +210,16 @@ export default function FaqAssistantBlock() {
     setDisplayedTexts(prev => ({ ...prev, [userMessage.id]: userMessage.text }));
     setInputValue('');
 
-    setTimeout(() => {
-      scrollToBottom(true);
-    }, 0);
+    // On mobile, use requestAnimationFrame for better performance
+    if (isMobile) {
+      requestAnimationFrame(() => {
+        scrollToBottom(false);
+      });
+    } else {
+      setTimeout(() => {
+        scrollToBottom(true);
+      }, 0);
+    }
 
     try {
       const response = await fetch('/api/faq-chat', {
@@ -228,9 +259,16 @@ export default function FaqAssistantBlock() {
 
       setMessages(prev => [...prev, botMessage]);
       
-      setTimeout(() => {
-        scrollToBottom(true);
-      }, 0);
+      // On mobile, use requestAnimationFrame for better performance
+      if (isMobile) {
+        requestAnimationFrame(() => {
+          scrollToBottom(false);
+        });
+      } else {
+        setTimeout(() => {
+          scrollToBottom(true);
+        }, 0);
+      }
       
       startTypewriter(botMessage.id, botMessage.text);
 
@@ -249,9 +287,16 @@ export default function FaqAssistantBlock() {
       };
       setMessages(prev => [...prev, errorMessage]);
       
-      setTimeout(() => {
-        scrollToBottom(true);
-      }, 0);
+      // On mobile, use requestAnimationFrame for better performance
+      if (isMobile) {
+        requestAnimationFrame(() => {
+          scrollToBottom(false);
+        });
+      } else {
+        setTimeout(() => {
+          scrollToBottom(true);
+        }, 0);
+      }
       
       startTypewriter(errorMessage.id, errorMessage.text);
     }
@@ -288,7 +333,7 @@ export default function FaqAssistantBlock() {
         </p>
       </div>
 
-      <div className="bg-white/60 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="bg-white/60 dark:bg-white/5 backdrop-blur-sm md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
         {/* Chat Messages */}
         <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2">
           {messages.map((message) => (
