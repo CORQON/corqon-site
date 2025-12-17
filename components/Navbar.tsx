@@ -80,7 +80,7 @@ export default function Navbar() {
             >
               {/* Left: Logo */}
               <div className="flex items-center">
-                <Link href="/" className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white hover:opacity-80 transition-opacity" onClick={closeMobileMenu}>
+                <Link href="/" className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white hover:opacity-80" onClick={closeMobileMenu}>
                   <Image
                     src="/corqon-symbol.png"
                     alt="CORQON"
@@ -89,7 +89,7 @@ export default function Navbar() {
                     className="h-7 w-7 sm:h-8 sm:w-8 shrink-0"
                     priority
                   />
-                  <span className="hidden xs:inline">CORQON</span>
+                  <span className="hidden sm:inline">CORQON</span>
                 </Link>
               </div>
               

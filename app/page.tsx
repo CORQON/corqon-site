@@ -118,7 +118,7 @@ export default function Home() {
 
       {/* Final CTA */}
       <section id="pricing" className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 corqon-section-loose scroll-mt-28 overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 bottom-[-200px] md:bottom-[-400px] pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 bottom-0 md:bottom-[-400px] pointer-events-none overflow-hidden">
           <div className="cta-grid-fade absolute inset-0">
             <GridHeroBackground />
           </div>

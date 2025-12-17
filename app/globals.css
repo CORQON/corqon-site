@@ -36,13 +36,17 @@ a {
   text-decoration: none;
 }
 
-/* Disable ALL animations on mobile for smooth performance */
+/* Disable ALL animations on mobile for smooth performance - but keep essential transitions */
 @media (max-width: 767px) {
   *,
   *::before,
   *::after {
     animation: none !important;
-    transition: none !important;
+  }
+  
+  /* Keep essential transitions for UI interactions */
+  a, button, input, textarea, select {
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease !important;
   }
 }
 
@@ -745,6 +749,13 @@ a {
 @keyframes corqonFooterSweep {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* Disable footer animation on mobile */
+@media (max-width: 767px) {
+  .corqon-footer-sweep-rot {
+    animation: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -10,7 +10,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="corqon-footer-premium relative overflow-hidden border-t border-white/10 bg-black/40 backdrop-blur-sm">
+    <footer className="corqon-footer-premium relative overflow-hidden border-t border-white/10 bg-black/40 backdrop-blur-sm z-10">
       <div className="corqon-footer-mark" aria-hidden="true">
         <svg viewBox="0 0 1000 1000" className="corqon-footer-mark-svg" role="presentation">
           <defs>
