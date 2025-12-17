@@ -88,6 +88,14 @@ export default function SystemIntelligenceSection() {
 
   // Progress clock using requestAnimationFrame with optimized updates
   useEffect(() => {
+    // Don't run animations on mobile
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      // Just set initial state on mobile, no animation
+      setProgress(0);
+      setActiveIndex(0);
+      return;
+    }
+    
     // Reset cycle start time to ensure it starts at the top (progress = 0)
     cycleStartRef.current = Date.now();
     progressRef.current = 0;

@@ -36,6 +36,7 @@ export default function FlowBackground({
   color = 'white',
   origin = 'sides'
 }: FlowBackgroundProps) {
+  const [isDesktop, setIsDesktop] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number>();
@@ -44,6 +45,13 @@ export default function FlowBackground({
   const timeRef = useRef(0);
   const speedRef = useRef(speed);
   const reducedMotionRef = useRef(reducedMotion);
+
+  // Check if desktop on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsDesktop(window.innerWidth >= 768);
+    }
+  }, []);
 
   useEffect(() => {
     speedRef.current = speed;
@@ -300,14 +308,11 @@ export default function FlowBackground({
   };
 
   useEffect(() => {
+    if (!isDesktop) return;
+    
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
-
-    // Don't initialize on mobile (below md breakpoint)
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return;
-    }
 
     wavesRef.current = [];
 
@@ -324,10 +329,15 @@ export default function FlowBackground({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [speed, reducedMotion]);
+  }, [speed, reducedMotion, isDesktop]);
+
+  // Don't render on mobile at all
+  if (!isDesktop) {
+    return null;
+  }
 
   return (
-    <div ref={containerRef} className={`absolute inset-0 overflow-hidden ${className} hidden md:block`}>
+    <div ref={containerRef} className={`absolute inset-0 overflow-hidden ${className}`}>
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
