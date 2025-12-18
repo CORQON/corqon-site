@@ -96,6 +96,8 @@ export default function AnimatedChatDemo() {
   const prefersReducedMotion = useRef(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const autoPromptSentRef = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisibleRef = useRef(false);
 
   // Shared function to animate assistant response with typewriter effect
   const animateAssistantResponse = useCallback((fullResponse: string, onComplete?: () => void) => {
@@ -520,45 +522,57 @@ export default function AnimatedChatDemo() {
     }
   };
 
+  // IntersectionObserver to only run animation when visible
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !sectionRef.current) return;
     
     // Skip animation if deep linked
     if (isDeepLinked) {
       return;
     }
-    
-    // On mobile, set up ready state but allow manual interaction to trigger animation
-    if (isMobile) {
-      clearAllTimers();
-      setContextStage('ready');
-      setStage('ready');
-      setSelectedWeek(50);
-      // Return cleanup function to ensure no timers leak
-      return () => {
-        clearAllTimers();
-      };
-    }
-    
-    // Start animation after a short delay (desktop only)
-    const initialDelay = window.setTimeout(() => {
-      startAnimation();
-    }, 500);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isVisibleRef.current) {
+            isVisibleRef.current = true;
+            // Start animation when section becomes visible
+            const initialDelay = window.setTimeout(() => {
+              startAnimation();
+            }, 500);
+            timersRef.current.push(initialDelay);
+          } else if (!entry.isIntersecting && isVisibleRef.current) {
+            isVisibleRef.current = false;
+            // Stop animation when section is not visible
+            clearAllTimers();
+            setStage('ready');
+            setContextStage('ready');
+            setUserText('');
+            setAssistantText('');
+            setShowTypingIndicator(false);
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of section is visible
+        rootMargin: '50px', // Start slightly before entering viewport
+      }
+    );
+
+    observer.observe(sectionRef.current);
 
     return () => {
+      observer.disconnect();
       clearAllTimers();
-      if (initialDelay) {
-        clearTimeout(initialDelay);
-      }
     };
-  }, [mounted, isDeepLinked, isMobile]);
+  }, [mounted, isDeepLinked]);
 
   if (!mounted) {
     return null;
   }
 
   return (
-    <section id="briefing-chat" className="corqon-section scroll-mt-28">
+    <section ref={sectionRef} id="briefing-chat" className="corqon-section scroll-mt-28">
       {/* Dotted Frame Wrapper - Same geometry as cards section */}
       <OpenTopDottedFrame
         alignClassName="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12"

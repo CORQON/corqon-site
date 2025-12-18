@@ -492,6 +492,8 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
         className="absolute inset-0 w-full h-full pointer-events-none"
         aria-hidden="true"
       />
+      {/* Subtle light flicker overlay for mobile grid */}
+      <div className="grid-flicker-overlay md:hidden" aria-hidden="true" />
     </div>
   );
 }
