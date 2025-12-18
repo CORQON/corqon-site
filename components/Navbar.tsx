@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Navbar() {
@@ -70,6 +69,16 @@ export default function Navbar() {
         <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-white/10">
           <div className="max-w-7xl mx-auto px-3 py-2.5">
             <div className="flex items-center justify-between">
+              {/* Logo */}
+              <div className="flex items-center">
+                <Link href="/" className="flex items-center">
+                  <img
+                    src="/brand-logo-mobile.svg"
+                    alt="CORQON"
+                    className="h-6 w-auto"
+                  />
+                </Link>
+              </div>
               {/* Menu Button + CTA */}
               <div className="flex items-center gap-2">
                 <button
@@ -179,13 +188,15 @@ export default function Navbar() {
               {/* Left: Logo */}
               <div className="flex items-center">
                 <Link href="/" className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white hover:opacity-80">
-                  <Image
-                    src="/corqon-symbol.png"
+                  <img
+                    src="/brand-logo-mobile.svg"
                     alt="CORQON"
-                    width={36}
-                    height={36}
-                    className="h-7 w-7 sm:h-8 sm:w-8 shrink-0"
-                    priority
+                    className="h-7 w-auto sm:h-8 shrink-0 block md:hidden"
+                  />
+                  <img
+                    src="/brand-logo-desktop.svg"
+                    alt="CORQON"
+                    className="h-7 w-auto sm:h-8 shrink-0 hidden md:block"
                   />
                   <span className="hidden sm:inline">CORQON</span>
                 </Link>
