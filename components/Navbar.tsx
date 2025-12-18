@@ -70,19 +70,6 @@ export default function Navbar() {
         <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-white/10">
           <div className="max-w-7xl mx-auto px-3 py-2.5">
             <div className="flex items-center justify-between">
-              {/* Logo */}
-              <Link href="/" className="flex items-center gap-2" onClick={closeMobileMenu}>
-                <Image
-                  src="/corqon-symbol.png"
-                  alt="CORQON"
-                  width={28}
-                  height={28}
-                  className="h-7 w-7"
-                  priority
-                />
-                <span className="text-sm font-semibold text-white">CORQON</span>
-              </Link>
-              
               {/* Menu Button + CTA */}
               <div className="flex items-center gap-2">
                 <button
