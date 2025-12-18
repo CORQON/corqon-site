@@ -404,9 +404,9 @@ export default function FaqAssistantBlock() {
         </p>
       </div>
 
-      <div className="bg-white/60 dark:bg-white/5 md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto bg-gray-900 md:bg-white/60 md:dark:bg-white/5">
+      <div className="relative z-20 bg-gray-800 md:bg-white/60 md:dark:bg-white/5 md:backdrop-blur-xl rounded-2xl border border-gray-700 md:border-gray-200/50 md:dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
         {/* Chat Messages */}
-        <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2 bg-gray-900 md:bg-transparent rounded-lg md:rounded-none p-4 md:p-0 -m-4 md:m-0">
+        <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2 bg-gray-800 md:bg-transparent rounded-lg md:rounded-none p-4 md:p-0 -m-4 md:m-0">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -415,8 +415,8 @@ export default function FaqAssistantBlock() {
               <div
                 className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                   message.isUser
-                    ? 'bg-blue-600 dark:bg-blue-500 text-white'
-                    : 'bg-white/10 text-white'
+                    ? 'bg-gray-700 text-white'
+                    : 'bg-gray-700/80 text-white'
                 }`}
               >
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -460,7 +460,7 @@ export default function FaqAssistantBlock() {
           <button
             type="submit"
             disabled={!inputValue.trim() || !canSubmit()}
-            className="w-11 h-11 flex items-center justify-center bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 active:bg-blue-800 dark:active:bg-blue-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-blue-600 disabled:dark:hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+            className="w-11 h-11 flex items-center justify-center bg-gray-700 text-white rounded-lg hover:bg-gray-600 active:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
             aria-label="Send message"
           >
             <svg
