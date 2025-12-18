@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import SchedulingEmbed from '@/components/SchedulingEmbed';
+import CalendlyInline from '@/components/CalendlyInline';
 
 export default function Contact() {
   // Handle hash scroll to #schedule anchor
@@ -29,7 +29,7 @@ export default function Contact() {
           </p>
         </div>
 
-        <SchedulingEmbed />
+        <CalendlyInline />
 
         <div className="mt-8 sm:mt-10 md:mt-12 text-center px-4 sm:px-0">
           <p className="text-white/60 text-xs sm:text-sm mb-2">
