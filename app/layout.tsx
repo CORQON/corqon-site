@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import GlobalErrorHandler from '@/components/GlobalErrorHandler';
+import FaviconHead from '@/components/FaviconHead';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
   description: 'AI-driven platform that improves employee vitality, focus and work performance through actionable insights.',
   icons: {
     icon: [
-      { url: '/favicon-desktop.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -43,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
       <body className="min-h-screen bg-[#0a0a0a] overflow-x-hidden">
+        <FaviconHead />
         <GlobalErrorHandler />
         <ErrorBoundary>
           <div className="relative min-h-screen flex flex-col overflow-x-hidden">

@@ -360,7 +360,7 @@ a {
     rgba(34, 197, 94, 0.35) 350deg,
     transparent 360deg
   );
-  animation: corqon-ring-sweep 10s linear infinite;
+  animation: none;
   pointer-events: none;
   mask: radial-gradient(
     circle,
@@ -378,7 +378,12 @@ a {
   );
 }
 
-/* Sweep animation restored on mobile - removed mobile-specific disable */
+/* Enable animation on tablet/desktop only */
+@media (min-width: 768px) {
+  .confidence-loop-sweep {
+    animation: corqon-ring-sweep 10s linear infinite;
+  }
+}
 
 
 /* Synchronized Inner Glow - Controlled by React state */

@@ -133,14 +133,15 @@ export default function Navbar() {
                   borderColor: 'rgba(107, 114, 128, 0.2)',
                 }}
               >
-                {/* Left: Logo */}
+                {/* Left: Logo + Brand */}
                 <div className="flex items-center">
-                  <Link href="/" className="flex items-center hover:opacity-80">
+                  <Link href="/" className="flex items-center gap-2 hover:opacity-80">
                     <img
                       src="/logo-witte.svg"
                       alt="CORQON"
                       className="h-6 w-auto"
                     />
+                    <span className="text-base font-semibold text-white">CORQON</span>
                   </Link>
                 </div>
 
@@ -194,7 +195,7 @@ export default function Navbar() {
                 >
                   <nav className="flex flex-col px-4 py-4 space-y-2" role="menu">
                     <a
-                      href="#datastreams"
+                      href="/#datastreams"
                       className="text-white/70 hover:text-white text-sm font-medium py-2 transition-colors"
                       onClick={closeMobileMenu}
                       role="menuitem"
@@ -202,7 +203,7 @@ export default function Navbar() {
                       Datastreams
                     </a>
                     <a
-                      href="#briefing-chat"
+                      href="/#briefing-chat"
                       className="text-white/70 hover:text-white text-sm font-medium py-2 transition-colors"
                       onClick={closeMobileMenu}
                       role="menuitem"
@@ -210,7 +211,7 @@ export default function Navbar() {
                       Advisor
                     </a>
                     <a
-                      href="#weekly-data"
+                      href="/#weekly-data"
                       className="text-white/70 hover:text-white text-sm font-medium py-2 transition-colors"
                       onClick={closeMobileMenu}
                       role="menuitem"
@@ -218,7 +219,7 @@ export default function Navbar() {
                       Briefing
                     </a>
                     <a
-                      href="#faq-assistant"
+                      href="/#faq-assistant"
                       className="text-white/70 hover:text-white text-sm font-medium py-2 transition-colors"
                       onClick={closeMobileMenu}
                       role="menuitem"
@@ -226,7 +227,7 @@ export default function Navbar() {
                       FAQ
                     </a>
                     <a
-                      href="#pricing"
+                      href="/#pricing"
                       className="text-white/70 hover:text-white text-sm font-medium py-2 transition-colors"
                       onClick={closeMobileMenu}
                       role="menuitem"
@@ -264,32 +265,33 @@ export default function Navbar() {
                   : undefined
               }
             >
-              {/* Left: Logo */}
+              {/* Left: Logo + Brand */}
               <div className="flex items-center">
-                <Link href="/" className="flex items-center hover:opacity-80">
+                <Link href="/" className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white hover:opacity-80">
                   <img
                     src="/logo-witte.svg"
                     alt="CORQON"
                     className="h-7 w-auto sm:h-8 shrink-0"
                   />
+                  <span className="hidden sm:inline">CORQON</span>
                 </Link>
               </div>
               
               {/* Center: Navigation Links */}
               <div className="hidden md:flex items-center justify-center space-x-8">
-                <a href="#datastreams" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+                <a href="/#datastreams" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
                   Datastreams
                 </a>
-                <a href="#briefing-chat" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+                <a href="/#briefing-chat" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
                   Advisor
                 </a>
-                <a href="#weekly-data" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+                <a href="/#weekly-data" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
                   Briefing
                 </a>
-                <a href="#faq-assistant" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+                <a href="/#faq-assistant" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
                   FAQ
                 </a>
-                <a href="#pricing" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+                <a href="/#pricing" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
                   Pricing
                 </a>
               </div>
