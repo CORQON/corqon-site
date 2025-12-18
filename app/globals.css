@@ -90,7 +90,14 @@ a {
   *::after {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    filter: none !important;
+    /* Keep basic filters but disable expensive blur */
+    filter: blur(0) !important;
+  }
+  
+  /* Specifically target Tailwind backdrop-blur classes */
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   
   /* Disable will-change and hardware acceleration hints on mobile */
@@ -107,9 +114,20 @@ a {
     box-shadow: none !important;
   }
   
+  /* Disable mix-blend-mode on mobile - can cause crashes */
+  * {
+    mix-blend-mode: normal !important;
+  }
+  
   /* Only keep minimal transitions for essential UI feedback */
   a:active, button:active {
     transition: opacity 0.1s ease !important;
+  }
+  
+  /* Reduce canvas rendering complexity on mobile */
+  canvas {
+    image-rendering: auto !important;
+    will-change: auto !important;
   }
 }
 
@@ -529,7 +547,7 @@ a {
   backdrop-filter: blur(8px);
 }
 
-/* Disable backdrop-filter on mobile */
+/* Disable backdrop-filter on mobile - already handled globally above */
 @media (max-width: 767px) {
   .inactive-card {
     backdrop-filter: none !important;
@@ -553,7 +571,7 @@ a {
     0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-/* Disable backdrop-filter and box-shadow on mobile */
+/* Disable backdrop-filter and box-shadow on mobile - backdrop already handled globally */
 @media (max-width: 767px) {
   .active-card {
     backdrop-filter: none !important;
@@ -828,7 +846,7 @@ a {
   -webkit-backdrop-filter: blur(18px);
 }
 
-/* Disable backdrop-filter and box-shadow on mobile */
+/* Disable backdrop-filter and box-shadow on mobile - backdrop already handled globally */
 @media (max-width: 767px) {
   .corqon-cta-pop {
     backdrop-filter: none !important;
@@ -936,7 +954,7 @@ a {
   }
 }
 
-/* Grid Light Flicker Animation - Subtle shimmer effect */
+/* Grid Light Flicker Animation - Subtle shimmer effect - DESKTOP ONLY */
 @keyframes grid-light-flicker {
   0%, 100% {
     opacity: 0.05;
@@ -960,8 +978,16 @@ a {
     radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 240px 240px;
   background-position: 0 0;
-  animation: grid-light-flicker 4s ease-in-out infinite;
+  animation: none;
+  opacity: 0.05;
   mix-blend-mode: screen;
+}
+
+/* Enable animation on desktop only */
+@media (min-width: 768px) {
+  .grid-flicker-overlay {
+    animation: grid-light-flicker 4s ease-in-out infinite;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

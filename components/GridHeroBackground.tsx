@@ -410,28 +410,7 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
       // On mobile, draw static grid once
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        const rect = container.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const dpr = 1;
-
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-        ctx.scale(dpr, dpr);
-
-        const cellSize = getCellSize(width);
-        gridConfigRef.current.cellSize = cellSize;
-
-        ctx.clearRect(0, 0, width, height);
-        drawGrid(ctx, width, height);
-      }
-      
-      // Handle resize on mobile
-      const resizeObserver = new ResizeObserver(() => {
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
+        try {
           const rect = container.getBoundingClientRect();
           const width = rect.width;
           const height = rect.height;
@@ -448,11 +427,51 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
 
           ctx.clearRect(0, 0, width, height);
           drawGrid(ctx, width, height);
+        } catch (error) {
+          // Silently handle errors on mobile
+          if (process.env.NODE_ENV === 'development') {
+            console.error('GridHeroBackground mobile render error:', error);
+          }
         }
+      }
+      
+      // Handle resize on mobile with debouncing
+      let resizeTimeout: NodeJS.Timeout;
+      const resizeObserver = new ResizeObserver(() => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          const ctx = canvas.getContext('2d');
+          if (ctx && container) {
+            try {
+              const rect = container.getBoundingClientRect();
+              const width = rect.width;
+              const height = rect.height;
+              const dpr = 1;
+
+              canvas.width = width * dpr;
+              canvas.height = height * dpr;
+              canvas.style.width = `${width}px`;
+              canvas.style.height = `${height}px`;
+              ctx.scale(dpr, dpr);
+
+              const cellSize = getCellSize(width);
+              gridConfigRef.current.cellSize = cellSize;
+
+              ctx.clearRect(0, 0, width, height);
+              drawGrid(ctx, width, height);
+            } catch (error) {
+              // Silently handle errors on mobile
+              if (process.env.NODE_ENV === 'development') {
+                console.error('GridHeroBackground mobile resize error:', error);
+              }
+            }
+          }
+        }, 100);
       });
 
       resizeObserver.observe(container);
       return () => {
+        clearTimeout(resizeTimeout);
         resizeObserver.disconnect();
       };
     }
@@ -463,15 +482,20 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
     pulsesRef.current = [];
     lastPulseSpawnRef.current = 0;
 
+    let resizeTimeout: NodeJS.Timeout;
     const resizeObserver = new ResizeObserver(() => {
-      pulsesRef.current = [];
-      lastPulseSpawnRef.current = 0;
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        pulsesRef.current = [];
+        lastPulseSpawnRef.current = 0;
+      }, 100);
     });
 
     resizeObserver.observe(container);
     animate();
 
     return () => {
+      clearTimeout(resizeTimeout);
       resizeObserver.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -492,8 +516,10 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
         className="absolute inset-0 w-full h-full pointer-events-none"
         aria-hidden="true"
       />
-      {/* Subtle light flicker overlay for mobile grid */}
-      <div className="grid-flicker-overlay md:hidden" aria-hidden="true" />
+      {/* Subtle light flicker overlay - disabled on mobile for performance */}
+      {isDesktop && (
+        <div className="grid-flicker-overlay" aria-hidden="true" />
+      )}
     </div>
   );
 }

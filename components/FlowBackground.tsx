@@ -335,14 +335,19 @@ export default function FlowBackground({
 
     wavesRef.current = [];
 
+    let resizeTimeout: NodeJS.Timeout;
     const resizeObserver = new ResizeObserver(() => {
-      wavesRef.current = [];
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        wavesRef.current = [];
+      }, 100);
     });
 
     resizeObserver.observe(container);
     animate();
 
     return () => {
+      clearTimeout(resizeTimeout);
       resizeObserver.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);

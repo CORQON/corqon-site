@@ -1,14 +1,36 @@
 'use client';
 
 import Link from 'next/link';
-import GridHeroBackground from '@/components/GridHeroBackground';
-import GridFrameSection from '@/components/GridFrameSection';
-import SystemIntelligenceSection from '@/components/SystemIntelligenceSection';
-import WeeklyCfoReportSection from '@/components/WeeklyCfoReportSection';
-import CfoDashboardDemo from '@/components/CfoDashboardDemo';
-import HashScrollHandler from '@/components/HashScrollHandler';
-import PrivacyComplianceSection from '@/components/PrivacyComplianceSection';
 import dynamic from 'next/dynamic';
+import GridHeroBackground from '@/components/GridHeroBackground';
+import HashScrollHandler from '@/components/HashScrollHandler';
+
+// Heavy components - load below the fold dynamically
+const GridFrameSection = dynamic(() => import('@/components/GridFrameSection'), {
+  ssr: true,
+});
+
+const SystemIntelligenceSection = dynamic(() => import('@/components/SystemIntelligenceSection'), {
+  ssr: true,
+});
+
+const WeeklyCfoReportSection = dynamic(() => import('@/components/WeeklyCfoReportSection'), {
+  ssr: true,
+});
+
+// Very heavy component - defer loading
+const CfoDashboardDemo = dynamic(() => import('@/components/CfoDashboardDemo'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] flex items-center justify-center">
+      <div className="text-white/40 text-sm">Loading dashboard...</div>
+    </div>
+  ),
+});
+
+const PrivacyComplianceSection = dynamic(() => import('@/components/PrivacyComplianceSection'), {
+  ssr: true,
+});
 
 const FaqAssistantBlock = dynamic(() => import('@/components/FaqAssistantBlock'), {
   ssr: false,
