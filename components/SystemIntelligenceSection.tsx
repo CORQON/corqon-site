@@ -72,9 +72,13 @@ export default function SystemIntelligenceSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGCircleElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Check for reduced motion preference
+  // Check for mobile and reduced motion preference
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768);
+    }
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     reducedMotionRef.current = mediaQuery.matches;
 
@@ -88,6 +92,25 @@ export default function SystemIntelligenceSection() {
 
   // Progress clock using requestAnimationFrame with optimized updates
   useEffect(() => {
+    // CRITICAL: Disable auto-looping on mobile - only manual interaction
+    if (isMobile) {
+      // Initialize to first card, but don't start auto-looping
+      cycleStartRef.current = Date.now();
+      progressRef.current = 0;
+      activeIndexRef.current = 0;
+      
+      // Initialize DOM elements to starting position (top checkmark)
+      if (svgRef.current) {
+        svgRef.current.style.strokeDashoffset = `${CIRCUMFERENCE}`;
+      }
+      if (glowRef.current) {
+        // Glow starts at top (12 o'clock) to match the rotated ring
+        glowRef.current.style.transform = `rotate(${START_ANGLE_DEG}deg)`;
+      }
+      return; // Exit early - no auto-looping on mobile
+    }
+    
+    // Desktop: continue with auto-looping logic
     // Reset cycle start time to ensure it starts at the top (progress = 0)
     cycleStartRef.current = Date.now();
     progressRef.current = 0;
@@ -116,7 +139,7 @@ export default function SystemIntelligenceSection() {
       return () => clearInterval(interval);
     } else {
       // Normal motion: use requestAnimationFrame with batched state updates
-      // Mobile and desktop both get animation now
+      // Desktop only - mobile is disabled above
       
       const updateProgress = () => {
         const now = Date.now();
@@ -159,7 +182,7 @@ export default function SystemIntelligenceSection() {
         }
       };
     }
-  }, []);
+  }, [isMobile]);
 
   const handleCardClick = (index: number) => {
     // Reset cycle to start at the clicked card
@@ -351,16 +374,18 @@ export default function SystemIntelligenceSection() {
               })}
 
               {/* Center Labels with Confirming Statement */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center">
-                <p className="text-xs font-semibold text-gray-500 dark:text-white/60 mb-0.5 tracking-wider">
-                  CORQON
-                </p>
-                <p className="text-[10px] font-medium text-gray-500 dark:text-white/50 tracking-wider mb-2">
-                  INTELLIGENCE LAYER
-                </p>
-                <p className="text-[10px] font-medium text-gray-600 dark:text-white/70 transition-all duration-500">
-                  {confirmingStatements[activeIndex]}
-                </p>
+              <div className="absolute inset-0 flex items-center justify-center z-10 text-center">
+                <div>
+                  <p className="text-xs font-semibold text-gray-500 dark:text-white/60 mb-0.5 tracking-wider">
+                    CORQON
+                  </p>
+                  <p className="text-[10px] font-medium text-gray-500 dark:text-white/50 tracking-wider mb-2">
+                    INTELLIGENCE LAYER
+                  </p>
+                  <p className="text-[10px] font-medium text-gray-600 dark:text-white/70 transition-all duration-500">
+                    {confirmingStatements[activeIndex]}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

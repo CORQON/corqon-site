@@ -404,9 +404,9 @@ export default function FaqAssistantBlock() {
         </p>
       </div>
 
-      <div className="relative z-20 bg-gray-100 dark:bg-gray-800 md:bg-white/60 md:dark:bg-white/5 md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="relative z-20 bg-white/60 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
         {/* Chat Messages */}
-        <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2 bg-transparent rounded-lg md:rounded-none p-4 md:p-0 -m-4 md:m-0">
+        <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2 bg-transparent rounded-lg p-4 -m-4">
           {messages.map((message) => (
             <div
               key={message.id}

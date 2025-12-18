@@ -13,15 +13,14 @@ export default function FaviconHead() {
       }
     });
 
-    // Add light mode favicon
-    const lightLink = document.createElement('link');
-    lightLink.rel = 'icon';
-    lightLink.type = 'image/svg+xml';
-    lightLink.href = '/favicon-desktop.svg';
-    lightLink.setAttribute('media', '(prefers-color-scheme: light)');
-    document.head.appendChild(lightLink);
+    // Add desktop favicon (kavehcakla.svg) - primary favicon for desktop browsers
+    const desktopLink = document.createElement('link');
+    desktopLink.rel = 'icon';
+    desktopLink.type = 'image/svg+xml';
+    desktopLink.href = '/kavehcakla.svg';
+    document.head.appendChild(desktopLink);
 
-    // Add dark mode favicon
+    // Add dark mode favicon as fallback
     const darkLink = document.createElement('link');
     darkLink.rel = 'icon';
     darkLink.type = 'image/x-icon';
@@ -30,7 +29,7 @@ export default function FaviconHead() {
     document.head.appendChild(darkLink);
 
     return () => {
-      lightLink.remove();
+      desktopLink.remove();
       darkLink.remove();
     };
   }, []);

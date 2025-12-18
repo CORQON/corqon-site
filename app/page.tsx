@@ -26,14 +26,11 @@ export default function Home() {
       <HashScrollHandler />
       {/* Hero Section */}
       <section data-hero id="hero" className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pt-36 lg:pb-20 overflow-hidden corqon-section-loose">
-        {/* CRITICAL: GridHeroBackground already checks isDesktop internally and returns null on mobile */}
-        <div className="hidden md:block">
-          <GridHeroBackground />
-        </div>
+        <GridHeroBackground />
         <div className="absolute inset-0 z-[1] pointer-events-none hero-gradient-fade"></div>
         <div className="relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 sm:mb-8 text-xs sm:text-sm text-white/70">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 sm:mb-8 text-xs sm:text-sm text-white/70 mt-4 sm:mt-0">
               <span className="break-words">Explore how Corqon can make your company win</span>
               <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

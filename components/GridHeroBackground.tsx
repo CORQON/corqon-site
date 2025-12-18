@@ -309,8 +309,29 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
       const container = containerRef.current;
       if (!canvas || !container) return;
 
-      // CRITICAL: Never run on mobile - check immediately and bail out
-      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      // On mobile, draw static grid without animation
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      if (isMobile) {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const rect = container.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const dpr = 1; // Use DPR 1 on mobile
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.scale(dpr, dpr);
+
+        const cellSize = getCellSize(width);
+        gridConfigRef.current.cellSize = cellSize;
+
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(ctx, width, height);
+        // Don't draw pulses or animate on mobile - just static grid
         return;
       }
 
@@ -379,15 +400,65 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
   };
 
   useEffect(() => {
-    // CRITICAL: Never run on mobile - check immediately and bail out
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return;
-    }
-    if (!isDesktop) return;
-    
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    
+    if (isMobile) {
+      // On mobile, draw static grid once
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const rect = container.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const dpr = 1;
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.scale(dpr, dpr);
+
+        const cellSize = getCellSize(width);
+        gridConfigRef.current.cellSize = cellSize;
+
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(ctx, width, height);
+      }
+      
+      // Handle resize on mobile
+      const resizeObserver = new ResizeObserver(() => {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const rect = container.getBoundingClientRect();
+          const width = rect.width;
+          const height = rect.height;
+          const dpr = 1;
+
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          canvas.style.width = `${width}px`;
+          canvas.style.height = `${height}px`;
+          ctx.scale(dpr, dpr);
+
+          const cellSize = getCellSize(width);
+          gridConfigRef.current.cellSize = cellSize;
+
+          ctx.clearRect(0, 0, width, height);
+          drawGrid(ctx, width, height);
+        }
+      });
+
+      resizeObserver.observe(container);
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+    
+    // Desktop: run animation loop
+    if (!isDesktop) return;
 
     pulsesRef.current = [];
     lastPulseSpawnRef.current = 0;
@@ -409,11 +480,8 @@ export default function GridHeroBackground({ className = '' }: GridHeroBackgroun
     };
   }, [reducedMotion, isDesktop]);
 
-  // CRITICAL: Don't render on mobile at all - prevent mounting
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
-    return null;
-  }
-  if (!isDesktop) {
+  // Render on all devices - mobile will have static grid without animation
+  if (!isDesktop && typeof window !== 'undefined' && window.innerWidth >= 768) {
     return null;
   }
 
