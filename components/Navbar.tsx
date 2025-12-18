@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileNavVisible, setIsMobileNavVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
 
   // Detect mobile on mount
   useEffect(() => {
@@ -19,6 +21,41 @@ export default function Navbar() {
       return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
+
+  // Mobile-only scroll handler: hide on scroll down, show on scroll up
+  useEffect(() => {
+    if (!isMobile) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const scrollDifference = currentScrollY - lastScrollYRef.current;
+          
+          // Show navbar when scrolling up or at the top
+          if (scrollDifference < 0 || currentScrollY < 10) {
+            setIsMobileNavVisible(true);
+          } 
+          // Hide navbar when scrolling down (and not at top)
+          else if (scrollDifference > 0 && currentScrollY > 10) {
+            setIsMobileNavVisible(false);
+          }
+          
+          lastScrollYRef.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    lastScrollYRef.current = window.scrollY;
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isMobile]);
 
   // Desktop-only scroll handler - completely disabled on mobile
   useEffect(() => {
@@ -66,14 +103,16 @@ export default function Navbar() {
   if (isMobile) {
     return (
       <>
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-white/10">
+        <nav className={`fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-white/10 transition-transform duration-300 ${
+          isMobileNavVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}>
           <div className="max-w-7xl mx-auto px-3 py-2.5">
             <div className="flex items-center justify-between">
               {/* Logo */}
               <div className="flex items-center">
                 <Link href="/" className="flex items-center">
                   <img
-                    src="/brand-logo-mobile.svg"
+                    src="/brand-logo-desktop.svg"
                     alt="CORQON"
                     className="h-6 w-auto"
                   />
@@ -190,11 +229,6 @@ export default function Navbar() {
                 <Link href="/" className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white hover:opacity-80">
                   <img
                     src="/brand-logo-mobile.svg"
-                    alt="CORQON"
-                    className="h-7 w-auto sm:h-8 shrink-0 block md:hidden"
-                  />
-                  <img
-                    src="/brand-logo-desktop.svg"
                     alt="CORQON"
                     className="h-7 w-auto sm:h-8 shrink-0 hidden md:block"
                   />

@@ -91,13 +91,34 @@ export default function FaqAssistantBlock() {
       delete typingIntervalsRef.current[messageId];
     }
 
-    // On mobile, show text instantly to avoid performance issues
+    // On mobile, use fast typing animation
     if (isMobile) {
-      setDisplayedTexts(prev => ({ ...prev, [messageId]: fullText }));
-      // Single scroll after text is set
-      setTimeout(() => {
-        scrollToBottom(false);
-      }, 0);
+      // Initialize with empty text
+      setDisplayedTexts(prev => ({ ...prev, [messageId]: '' }));
+
+      const typingSpeed = 8; // Fast typing speed for mobile (8ms per character)
+      let currentIndex = 0;
+
+      const interval = setInterval(() => {
+        currentIndex += 1;
+        if (currentIndex <= fullText.length) {
+          setDisplayedTexts(prev => ({
+            ...prev,
+            [messageId]: fullText.slice(0, currentIndex),
+          }));
+          // Use instant scroll during typewriter to keep up with text appearance
+          scrollToBottom(false);
+        }
+        
+        if (currentIndex >= fullText.length) {
+          clearInterval(interval);
+          delete typingIntervalsRef.current[messageId];
+          // Final scroll to ensure everything is visible
+          scrollToBottom(false);
+        }
+      }, typingSpeed);
+
+      typingIntervalsRef.current[messageId] = interval as unknown as number;
       return;
     }
 
@@ -383,9 +404,9 @@ export default function FaqAssistantBlock() {
         </p>
       </div>
 
-      <div className="bg-white/60 dark:bg-white/5 md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="bg-white/60 dark:bg-white/5 md:backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 lg:p-8 max-w-4xl mx-auto bg-gray-900 md:bg-white/60 md:dark:bg-white/5">
         {/* Chat Messages */}
-        <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2">
+        <div ref={messagesContainerRef} className="min-h-[400px] max-h-[600px] overflow-y-auto mb-6 space-y-4 pr-2 bg-gray-900 md:bg-transparent rounded-lg md:rounded-none p-4 md:p-0 -m-4 md:m-0">
           {messages.map((message) => (
             <div
               key={message.id}

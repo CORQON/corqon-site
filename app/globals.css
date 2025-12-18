@@ -316,11 +316,7 @@ a {
   }
 }
 
-@media (max-width: 767px) {
-  .confidence-loop-container {
-    animation: none !important;
-  }
-}
+/* Animation restored on mobile - removed mobile-specific disable */
 
 @media (prefers-reduced-motion: reduce) {
   .confidence-loop-container {
@@ -382,12 +378,7 @@ a {
   );
 }
 
-/* Disable sweep animation on mobile */
-@media (max-width: 767px) {
-  .confidence-loop-sweep {
-    animation: none !important;
-  }
-}
+/* Sweep animation restored on mobile - removed mobile-specific disable */
 
 
 /* Synchronized Inner Glow - Controlled by React state */

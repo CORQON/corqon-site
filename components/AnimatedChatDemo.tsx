@@ -108,11 +108,32 @@ export default function AnimatedChatDemo() {
     setShowTypingIndicator(false);
     setStage('assistant-streaming');
 
-    // On mobile or reduced motion, show text instantly
-    if (isMobile || prefersReducedMotion.current) {
+    // On reduced motion, show text instantly
+    if (prefersReducedMotion.current) {
       setAssistantText(fullResponse);
       setStage('complete');
       onComplete?.();
+      return;
+    }
+
+    // On mobile, use fast typing animation
+    if (isMobile) {
+      let assistantIndex = 0;
+      const typingSpeed = 8; // Fast typing speed for mobile (8ms per character)
+      
+      assistantTypewriterIntervalRef.current = window.setInterval(() => {
+        assistantIndex += 1;
+        if (assistantIndex <= fullResponse.length) {
+          setAssistantText(fullResponse.slice(0, assistantIndex));
+        } else {
+          if (assistantTypewriterIntervalRef.current) {
+            clearInterval(assistantTypewriterIntervalRef.current);
+            assistantTypewriterIntervalRef.current = null;
+          }
+          setStage('complete');
+          onComplete?.();
+        }
+      }, typingSpeed);
       return;
     }
 
@@ -507,7 +528,7 @@ export default function AnimatedChatDemo() {
       return;
     }
     
-    // CRITICAL: On mobile, skip auto-animation entirely - ensure no timers or intervals run
+    // On mobile, set up ready state but allow manual interaction to trigger animation
     if (isMobile) {
       clearAllTimers();
       setContextStage('ready');
